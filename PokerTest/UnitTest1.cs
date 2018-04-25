@@ -1,4 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using Poker;
 
 namespace PokerTest
 {
@@ -8,321 +10,339 @@ namespace PokerTest
         [TestMethod]
         public void TestShouldPassWithFiveCardsInHand()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Clubs),
+                new Card(CardFace.Ace, CardSuit.Diamonds),
+                new Card(CardFace.King, CardSuit.Hearts),
+                new Card(CardFace.King, CardSuit.Spades),
+                new Card(CardFace.Seven, CardSuit.Diamonds),
+            });
 
+            IPokerHandsChecker checker = new PokerHandsChecker();
+
+            Assert.IsTrue(checker.IsValidHand(hand));
         }
 
         [TestMethod]
         public void TestShouldFailWithFourCardsInHand()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Clubs),
+                new Card(CardFace.Ace, CardSuit.Diamonds),
+                new Card(CardFace.King, CardSuit.Hearts),
+                new Card(CardFace.King, CardSuit.Spades),
+            });
 
+            IPokerHandsChecker checker = new PokerHandsChecker();
+
+            Assert.IsFalse(checker.IsValidHand(hand));
         }
 
-        /*Tests for ROYAL FLUSH*/
+        [TestMethod]
+        public void TestRoyal_ReturnTrueWithRoyalCards()
+        {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Clubs),
+                new Card(CardFace.King, CardSuit.Clubs),
+                new Card(CardFace.Queen, CardSuit.Clubs),
+                new Card(CardFace.Jack, CardSuit.Clubs),
+                new Card(CardFace.Ten, CardSuit.Clubs),
+            });
+
+            IPokerHandsChecker checker = new PokerHandsChecker();
+
+            Assert.IsTrue(checker.IsRoyal(hand));
+        }
+
         [TestMethod]
         public void TestRoyalFlush_ReturnTrueWithRoyalFlushCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Clubs),
+                new Card(CardFace.King, CardSuit.Clubs),
+                new Card(CardFace.Queen, CardSuit.Clubs),
+                new Card(CardFace.Jack, CardSuit.Clubs),
+                new Card(CardFace.Ten, CardSuit.Clubs),
+            });
 
+            IPokerHandsChecker checker = new PokerHandsChecker();
+
+            Assert.IsTrue(checker.IsRoyalFlush(hand));
         }
 
         [TestMethod]
         public void TestRoyalFlush_ReturnFalseWithStraightFlushCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Nine, CardSuit.Clubs),
+                new Card(CardFace.Eight, CardSuit.Clubs),
+                new Card(CardFace.Seven, CardSuit.Clubs),
+                new Card(CardFace.Six, CardSuit.Clubs),
+                new Card(CardFace.Five, CardSuit.Clubs),
+            });
 
-        }
+            IPokerHandsChecker checker = new PokerHandsChecker();
 
-        [TestMethod]
-        public void TestRoyalFlush_ReturnFalseWithFourOfAkindCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestRoyalFlush_ReturnFalseWithFullHouseCards()
-        {
-
+            Assert.IsFalse(checker.IsRoyalFlush(hand));
         }
 
         [TestMethod]
         public void TestRoyalFlush_ReturnFalseWithFlushCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Clubs),
+                new Card(CardFace.Jack, CardSuit.Clubs),
+                new Card(CardFace.Nine, CardSuit.Clubs),
+                new Card(CardFace.Six, CardSuit.Clubs),
+                new Card(CardFace.Three, CardSuit.Clubs),
+            });
 
+            IPokerHandsChecker checker = new PokerHandsChecker();
+
+            Assert.IsFalse(checker.IsRoyalFlush(hand));
         }
 
-        [TestMethod]
-        public void TestRoyalFlush_ReturnFalseWithStraightCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestRoyalFlush_ReturnFalseWithThreeOfAKindCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestRoyalFlush_ReturnFalseWithTwoPairCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestRoyalFlush_ReturnFalseWithOnePairCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestRoyalFlush_ReturnFalseWithHighCardCards()
-        {
-
-        }
-
-        /*Tests for STRAIGHT FLUSH*/
         [TestMethod]
         public void TestStraightFlush_ReturnTrueWithStraightFlushCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Nine, CardSuit.Clubs),
+                new Card(CardFace.Eight, CardSuit.Clubs),
+                new Card(CardFace.Seven, CardSuit.Clubs),
+                new Card(CardFace.Six, CardSuit.Clubs),
+                new Card(CardFace.Five, CardSuit.Clubs),
+            });
 
-        }
+            IPokerHandsChecker checker = new PokerHandsChecker();
 
-        [TestMethod]
-        public void TestStraightFlush_ReturnFalseWithRoyalFlushCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestStraightFlush_ReturnFalseWithFourOfAkindCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestStraightFlush_ReturnFalseWithFullHouseCards()
-        {
-
+            Assert.IsTrue(checker.IsStraightFlush(hand));
         }
 
         [TestMethod]
         public void TestStraightFlush_ReturnFalseWithFlushCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Clubs),
+                new Card(CardFace.Jack, CardSuit.Clubs),
+                new Card(CardFace.Nine, CardSuit.Clubs),
+                new Card(CardFace.Six, CardSuit.Clubs),
+                new Card(CardFace.Three, CardSuit.Clubs),
+            });
 
+            IPokerHandsChecker checker = new PokerHandsChecker();
+
+            Assert.IsFalse(checker.IsStraightFlush(hand));
         }
 
         [TestMethod]
         public void TestStraightFlush_ReturnFalseWithStraightCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Nine, CardSuit.Spades),
+                new Card(CardFace.Eight, CardSuit.Diamonds),
+                new Card(CardFace.Seven, CardSuit.Clubs),
+                new Card(CardFace.Six, CardSuit.Diamonds),
+                new Card(CardFace.Five, CardSuit.Spades),
+            });
 
+            IPokerHandsChecker checker = new PokerHandsChecker();
+
+            Assert.IsFalse(checker.IsStraightFlush(hand));
         }
 
-        [TestMethod]
-        public void TestStraightFlush_ReturnFalseWithThreeOfAKindCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestStraightFlush_ReturnFalseWithTwoPairCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestStraightFlush_ReturnFalseWithOnePairCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestStraightFlush_ReturnFalseWithHighCardCards()
-        {
-
-        }
-
-        /*Tests for FOUR OF A KIND*/
         [TestMethod]
         public void TestFourOfAKind_ReturnTrueWithFourOfAKindCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Spades),
+                new Card(CardFace.Ace, CardSuit.Hearts),
+                new Card(CardFace.Ace, CardSuit.Clubs),
+                new Card(CardFace.Ace, CardSuit.Diamonds),
+                new Card(CardFace.Five, CardSuit.Clubs),
+            });
 
+            IPokerHandsChecker checker = new PokerHandsChecker();
+
+            Assert.IsTrue(checker.IsFourOfAKind(hand));
         }
 
         [TestMethod]
-        public void TestFourOfAKind_ReturnFalseWithRoyalFlushCards()
+        public void TestFourOfAKind_ReturnFalseWithThreeOfAKindCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Two, CardSuit.Spades),
+                new Card(CardFace.Two, CardSuit.Hearts),
+                new Card(CardFace.Two, CardSuit.Clubs),
+                new Card(CardFace.Nine, CardSuit.Diamonds),
+                new Card(CardFace.Five, CardSuit.Clubs),
+            });
 
-        }
+            IPokerHandsChecker checker = new PokerHandsChecker();
 
-        [TestMethod]
-        public void TestFourOfAKind_ReturnFalseWithStraightFlushCards()
-        {
-
+            Assert.IsFalse(checker.IsFourOfAKind(hand));
         }
 
         [TestMethod]
         public void TestFourOfAKind_ReturnFalseWithFullHouseCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Queen, CardSuit.Spades),
+                new Card(CardFace.Queen, CardSuit.Hearts),
+                new Card(CardFace.Queen, CardSuit.Clubs),
+                new Card(CardFace.Jack, CardSuit.Diamonds),
+                new Card(CardFace.Jack, CardSuit.Clubs),
+            });
 
-        }
+            IPokerHandsChecker checker = new PokerHandsChecker();
 
-        [TestMethod]
-        public void TestFourOfAKind_ReturnFalseWithFlushCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestFourOfAKind_ReturnFalseWithStraightCards()
-        {
-
-        }
-
-        [TestMethod]     //this test return TRUE for "Three Of A Kind" case
-        public void TestFourOfAKind_ReturnTrueWithThreeOfAKindCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestFourOfAKind_ReturnFalseWithTwoPairCards()
-        {
-
+            Assert.IsFalse(checker.IsFourOfAKind(hand));
         }
 
         [TestMethod]
         public void TestFourOfAKind_ReturnFalseWithOnePairCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Spades),
+                new Card(CardFace.Ace, CardSuit.Hearts),
+                new Card(CardFace.Two, CardSuit.Clubs),
+                new Card(CardFace.Nine, CardSuit.Diamonds),
+                new Card(CardFace.Five, CardSuit.Clubs),
+            });
 
+            IPokerHandsChecker checker = new PokerHandsChecker();
+
+            Assert.IsFalse(checker.IsFourOfAKind(hand));
         }
 
-        [TestMethod]
-        public void TestFourOfAKind_ReturnFalseWithHighCardCards()
-        {
-
-        }
-
-        /*Tests for FULL HOUSE*/
         [TestMethod]
         public void TestFullHouse_ReturnTrueWithFullHouseCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Queen, CardSuit.Spades),
+                new Card(CardFace.Queen, CardSuit.Hearts),
+                new Card(CardFace.Queen, CardSuit.Clubs),
+                new Card(CardFace.Jack, CardSuit.Diamonds),
+                new Card(CardFace.Jack, CardSuit.Clubs),
+            });
 
-        }
+            IPokerHandsChecker checker = new PokerHandsChecker();
 
-        [TestMethod]
-        public void TestFullHouse_ReturnFalseWithRoyalFlushCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestFullHouse_ReturnFalseWithStraightFlushCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestFullHouse_ReturnFalseWithFourOfAKindCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestFullHouse_ReturnFalseWithFlushCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestFullHouse_ReturnFalseWithStraightCards()
-        {
-
+            Assert.IsTrue(checker.IsFullHouse(hand));
         }
 
         [TestMethod]
         public void TestFullHouse_ReturnFalseWithThreeOfAKindCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Two, CardSuit.Spades),
+                new Card(CardFace.Two, CardSuit.Hearts),
+                new Card(CardFace.Two, CardSuit.Clubs),
+                new Card(CardFace.Queen, CardSuit.Diamonds),
+                new Card(CardFace.Five, CardSuit.Clubs),
+            });
 
+            IPokerHandsChecker checker = new PokerHandsChecker();
+
+            Assert.IsFalse(checker.IsFullHouse(hand));
         }
 
         [TestMethod]
         public void TestFullHouse_ReturnFalseWithTwoPairCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Spades),
+                new Card(CardFace.Ace, CardSuit.Hearts),
+                new Card(CardFace.King, CardSuit.Clubs),
+                new Card(CardFace.King, CardSuit.Diamonds),
+                new Card(CardFace.Nine, CardSuit.Clubs),
+            });
 
+            IPokerHandsChecker checker = new PokerHandsChecker();
+
+            Assert.IsFalse(checker.IsFullHouse(hand));
         }
 
         [TestMethod]
         public void TestFullHouse_ReturnFalseWithOnePairCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Spades),
+                new Card(CardFace.Ace, CardSuit.Hearts),
+                new Card(CardFace.Eight, CardSuit.Clubs),
+                new Card(CardFace.Five, CardSuit.Diamonds),
+                new Card(CardFace.Four, CardSuit.Clubs),
+            });
 
+            IPokerHandsChecker checker = new PokerHandsChecker();
+
+            Assert.IsFalse(checker.IsFullHouse(hand));
         }
 
-        [TestMethod]
-        public void TestFullHouse_ReturnFalseWithHighCardCards()
-        {
-
-        }
-
-        /*Tests for FLUSH*/
+       /*Tests for FLUSH*/
         [TestMethod]
         public void TestFlush_ReturnTrueWithFlushCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Clubs),
+                new Card(CardFace.Jack, CardSuit.Clubs),
+                new Card(CardFace.Nine, CardSuit.Clubs),
+                new Card(CardFace.Six, CardSuit.Clubs),
+                new Card(CardFace.Three, CardSuit.Clubs),
+            });
 
+            IPokerHandsChecker checker = new PokerHandsChecker();
+
+            Assert.IsTrue(checker.IsFlush(hand));
         }
 
         [TestMethod]
-        public void TestFlush_ReturnFalseWithRoyalFlushCards()
+        public void TestFlush_ReturnTrueWithRoyalFlushCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Clubs),
+                new Card(CardFace.King, CardSuit.Clubs),
+                new Card(CardFace.Queen, CardSuit.Clubs),
+                new Card(CardFace.Jack, CardSuit.Clubs),
+                new Card(CardFace.Ten, CardSuit.Clubs),
+            });
 
+            IPokerHandsChecker checker = new PokerHandsChecker();
+
+            Assert.IsTrue(checker.IsFlush(hand));
         }
 
         [TestMethod]
-        public void TestFlush_ReturnFalseWithStraightFlushCards()
+        public void TestFlush_ReturnTrueWithStraightFlushCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Nine, CardSuit.Clubs),
+                new Card(CardFace.Eight, CardSuit.Clubs),
+                new Card(CardFace.Seven, CardSuit.Clubs),
+                new Card(CardFace.Six, CardSuit.Clubs),
+                new Card(CardFace.Five, CardSuit.Clubs),
+            });
 
-        }
+            IPokerHandsChecker checker = new PokerHandsChecker();
 
-        [TestMethod]
-        public void TestFlush_ReturnFalseWithFourOfAKindCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestFlush_ReturnFalseWithFullHouseCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestFlush_ReturnFalseWithStraightCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestFlush_ReturnFalseWithThreeOfAKindCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestFlush_ReturnFalseWithTwoPairCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestFlush_ReturnFalseWithOnePairCards()
-        {
-
+            Assert.IsTrue(checker.IsFlush(hand));
         }
 
         [TestMethod]
         public void TestFlush_ReturnFalseWithHighCardCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Spades),
+                new Card(CardFace.Queen, CardSuit.Diamonds),
+                new Card(CardFace.Jack, CardSuit.Clubs),
+                new Card(CardFace.Six, CardSuit.Diamonds),
+                new Card(CardFace.Five, CardSuit.Spades),
+            });
 
+            IPokerHandsChecker checker = new PokerHandsChecker();
+
+            Assert.IsFalse(checker.IsFlush(hand));
         }
 
-        /*Tests for STRAIGHT*/
         [TestMethod]
         public void TestStraight_ReturnTrueWithStraightCards()
         {
@@ -383,7 +403,6 @@ namespace PokerTest
 
         }
 
-        /*Tests for THREE OF A KIND*/
         [TestMethod]
         public void TestThreeOfAKind_ReturnTrueWithThreeOfAKindCards()
         {
@@ -444,15 +463,8 @@ namespace PokerTest
 
         }
 
-        /*Tests for TWO PAIR*/
         [TestMethod]
-        public void TestTwoPair_ReturnTrueWithTwoPairCards()
-        {
-
-        }
-
-        [TestMethod]
-        public void TestTwoPair_ReturnFalseWithRoyalFlushCards()
+        public void TestTwoPair_ReturnTrueWithRoyalFlushCards()
         {
 
         }
@@ -482,7 +494,7 @@ namespace PokerTest
         }
 
         [TestMethod]
-        public void TTestTwoPair_ReturnFalseWithStraightCards()
+        public void TestTwoPair_ReturnFalseWithStraightCards()
         {
 
         }
@@ -493,8 +505,8 @@ namespace PokerTest
 
         }
 
-        [TestMethod]    //this test return TRUE for "One Pair" case
-        public void TestTwoPair_ReturnTrueWithOnePairCards()
+        [TestMethod]   
+        public void TestTwoPair_ReturnFalseWithOnePairCards()
         {
 
         }
@@ -505,7 +517,6 @@ namespace PokerTest
 
         }
 
-        /*Tests for ONE PAIR*/
         [TestMethod]
         public void TestOnePair_ReturnTrueWithOnePairCards()
         {
@@ -566,7 +577,6 @@ namespace PokerTest
 
         }
 
-        /*Tests for HIGH CARD*/
         [TestMethod]
         public void TestHighCard_ReturnTrueWithHighCardCards()
         {
