@@ -5,7 +5,7 @@ namespace Poker
 {
     public class Hand : IHand
     {
-        public IList<ICard> Cards { get; private set; }
+        public IList<ICard> Cards { get; set; }
 
         public Hand(IList<ICard> cards)
         {
@@ -15,9 +15,19 @@ namespace Poker
         public override string ToString()  
         {
             var builder = new StringBuilder();
-            builder.Append(Cards);
+            for (int i = 0; i < this.Cards.Count; i++)
+            {
+                builder.Append(Cards[i] + "\r\n");
+            }
 
             return builder.ToString();
         }
+        //still need to do this
+        public override int GetHashCode()
+        {
+            var hashCode = 0;
+            return hashCode;
+        }
+
     }
 }

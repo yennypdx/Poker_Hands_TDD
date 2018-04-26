@@ -8,7 +8,8 @@ namespace Poker
         {
             //to be valid a hand should have 5 cards
             //bool status = false;
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return false;
 
         }
         public bool IsRoyalFlush(IHand hand)
