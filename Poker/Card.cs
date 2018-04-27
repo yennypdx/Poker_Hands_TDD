@@ -4,8 +4,8 @@ namespace Poker
 {
     public class Card : ICard
     {
-        public CardFace Face { get; private set; }
-        public CardSuit Suit { get; private set; }
+        public CardFace Face { get; set; }
+        public CardSuit Suit { get; set; }
 
         public Card(CardFace face, CardSuit suit)
         {
