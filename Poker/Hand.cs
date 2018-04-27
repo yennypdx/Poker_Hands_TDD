@@ -15,10 +15,7 @@ namespace Poker
         public override string ToString()  
         {
             var builder = new StringBuilder();
-            for (int i = 0; i < this.Cards.Count; i++)
-            {
-                builder.Append(Cards[i] + "\r\n");
-            }
+            builder.Append(Cards);
 
             return builder.ToString();
         }
