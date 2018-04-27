@@ -6,6 +6,8 @@
     public interface IPokerHandsChecker
     {/*
         bool IsValidHand(IHand hand);
+        bool IsRoyal(IHand hand);
+        bool IsRoyalFlush(IHand hand);
         bool IsStraightFlush(IHand hand);
         bool IsFourOfAKind(IHand hand);
         bool IsFullHouse(IHand hand);

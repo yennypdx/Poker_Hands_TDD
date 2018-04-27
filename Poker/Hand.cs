@@ -14,10 +14,12 @@ namespace Poker
 
         public override string ToString()  
         {
-            var builder = new StringBuilder();
-            builder.Append(Cards);
-
-            return builder.ToString();
+            string outString = "";
+            foreach(Card c in Cards)
+            {
+                outString += c + " ";
+            }
+            return outString;
         }
         //still need to do this
         public override int GetHashCode()
