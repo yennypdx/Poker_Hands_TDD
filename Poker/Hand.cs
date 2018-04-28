@@ -5,7 +5,7 @@ namespace Poker
 {
     public class Hand : IHand
     {
-        public IList<ICard> Cards { get; private set; }
+        public IList<ICard> Cards { get; set; }
 
         public Hand(IList<ICard> cards)
         {
@@ -21,5 +21,12 @@ namespace Poker
             }
             return outString;
         }
+        //still need to do this
+        public override int GetHashCode()
+        {
+            var hashCode = 0;
+            return hashCode;
+        }
+
     }
 }

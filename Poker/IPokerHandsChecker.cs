@@ -4,7 +4,7 @@
     /// Interface for checking poker hands as defined in http://en.wikipedia.org/wiki/List_of_poker_hands.
     /// </summary>
     public interface IPokerHandsChecker
-    {
+    {/*
         bool IsValidHand(IHand hand);
         bool IsRoyal(IHand hand);
         bool IsRoyalFlush(IHand hand);
@@ -17,6 +17,6 @@
         bool IsTwoPair(IHand hand);
         bool IsOnePair(IHand hand);
         bool IsHighCard(IHand hand);
-        int CompareHands(IHand firstHand, IHand secondHand);
+        int CompareHands(IHand firstHand, IHand secondHand);*/
     }
 }

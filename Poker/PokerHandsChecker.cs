@@ -166,10 +166,23 @@ namespace Poker
         }
         public bool IsHighCard(IHand hand)
         {
-            return true;
+            if (IsValidHand(hand)) {
+                if (!(IsFlush(hand))) {
+                    if (!(IsStraight(hand))) {
+                        if (!(IsOnePair(hand))) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            //else false
+            return false;
         }
         public int CompareHands(IHand firstHand, IHand secondHand)
         {
+            //decide whether we should do the extra work of comparing 
+            //hands of equal 'rank'
+
             throw new NotImplementedException();
         }
     }
