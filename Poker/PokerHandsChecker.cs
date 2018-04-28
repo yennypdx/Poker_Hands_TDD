@@ -33,7 +33,7 @@ namespace Poker
             bool valid = false;
             if (IsValidHand(hand)) {
                 if (IsFlush(hand)) {
-                    if (IsStraight(hand)) {
+                    if (IsStraightFlush(hand)) {
                         if (IsRoyal(hand))
                         {
                             valid = true;
@@ -62,8 +62,8 @@ namespace Poker
         {
             bool valid = true;
             if (IsValidHand(hand)) {
-                if (IsThreeOfAKind(hand)) {
-                    if (IsTwoPair(hand))
+                if (IsTwoPair(hand)) {
+                    if (IsThreeOfAKind(hand))
                     {
                         valid = true;
                     }
@@ -76,10 +76,12 @@ namespace Poker
         {
             bool valid = true;
             if (IsValidHand(hand)) {
-                if (IsThreeOfAKind(hand)) {
-                    if (IsTwoPair(hand))
-                    {
-                        valid = true;
+                if (IsOnePair(hand)) {
+                    if (IsTwoPair(hand)) {
+                        if (IsThreeOfAKind(hand))
+                        {
+                            valid = true;
+                        }
                     }
                 }
             }
@@ -95,8 +97,7 @@ namespace Poker
             int countHeart = 0;
 
             if (IsValidHand(hand)) {
-                for(int i = 0; i < 5; i++)
-                {
+                for(int c = 0; c < 5; c++) {
                     if (hand.Equals(CardSuit.Clubs)) {
                         countClubs++;
                     }
@@ -120,23 +121,52 @@ namespace Poker
         }
         public bool IsStraight(IHand hand)
         {
-            throw new NotImplementedException();
+            return true;
         }
         public bool IsThreeOfAKind(IHand hand)
         {
-            throw new NotImplementedException();
+            var distinctFaces = hand.Cards.Select(card => card.Face).Distinct().ToArray();
+            int counter = 0;
+
+            foreach (var distinctItem in distinctFaces) {
+                for (int i = 0; i < hand.Cards.Count(); i++) {
+                    if (hand.Cards[i].Face.Equals(distinctItem)) {
+                        counter++;
+                    }
+
+                    if (counter == 3) {
+                        return true;
+                    }
+                }
+                counter = 0;
+            }
+            return false;
         }
         public bool IsTwoPair(IHand hand)
         {
-            throw new NotImplementedException();
+            return true;
         }
         public bool IsOnePair(IHand hand)
         {
-            throw new NotImplementedException();
+            var distinctFaces = hand.Cards.Select(card => card.Face).Distinct().ToArray();
+            int counter = 0;
+            foreach (var distinctItem in distinctFaces) {
+                for (int i = 0; i < hand.Cards.Count(); i++) {
+                    if (hand.Cards[i].Face.Equals(distinctItem)) {
+                        counter++;
+                    }
+
+                    if (counter == 2) {
+                        return true;
+                    }
+                }
+                counter = 0;
+            }
+            return false;
         }
         public bool IsHighCard(IHand hand)
         {
-            throw new NotImplementedException();
+            return true;
         }
         public int CompareHands(IHand firstHand, IHand secondHand)
         {

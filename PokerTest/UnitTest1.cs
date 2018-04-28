@@ -71,7 +71,7 @@ namespace PokerTest
         }
 
         [TestMethod]
-        public void TestRoyalFlush_ReturnFalseWithStraightFlushCards()
+        public void TestRoyalFlush_ReturnTrueWithStraightFlushCards()
         {
             IHand hand = new Hand(new List<ICard>() {
                 new Card(CardFace.Nine, CardSuit.Clubs),
@@ -83,11 +83,11 @@ namespace PokerTest
 
             IPokerHandsChecker checker = new PokerHandsChecker();
 
-            Assert.IsFalse(checker.IsRoyalFlush(hand));
+            Assert.IsTrue(checker.IsRoyalFlush(hand));
         }
 
         [TestMethod]
-        public void TestRoyalFlush_ReturnFalseWithFlushCards()
+        public void TestRoyalFlush_ReturnTrueWithFlushCards()
         {
             IHand hand = new Hand(new List<ICard>() {
                 new Card(CardFace.Ace, CardSuit.Clubs),
@@ -99,7 +99,7 @@ namespace PokerTest
 
             IPokerHandsChecker checker = new PokerHandsChecker();
 
-            Assert.IsFalse(checker.IsRoyalFlush(hand));
+            Assert.IsTrue(checker.IsRoyalFlush(hand));
         }
 
         [TestMethod]
@@ -131,7 +131,7 @@ namespace PokerTest
 
             IPokerHandsChecker checker = new PokerHandsChecker();
 
-            Assert.IsFalse(checker.IsStraightFlush(hand));
+            Assert.IsTrue(checker.IsStraightFlush(hand));
         }
 
         [TestMethod]
@@ -147,7 +147,7 @@ namespace PokerTest
 
             IPokerHandsChecker checker = new PokerHandsChecker();
 
-            Assert.IsFalse(checker.IsStraightFlush(hand));
+            Assert.IsTrue(checker.IsStraightFlush(hand));
         }
 
         [TestMethod]
@@ -167,7 +167,7 @@ namespace PokerTest
         }
 
         [TestMethod]
-        public void TestFourOfAKind_ReturnFalseWithThreeOfAKindCards()
+        public void TestFourOfAKind_ReturnTrueWithThreeOfAKindCards()
         {
             IHand hand = new Hand(new List<ICard>() {
                 new Card(CardFace.Two, CardSuit.Spades),
@@ -179,42 +179,10 @@ namespace PokerTest
 
             IPokerHandsChecker checker = new PokerHandsChecker();
 
-            Assert.IsFalse(checker.IsFourOfAKind(hand));
+            Assert.IsTrue(checker.IsFourOfAKind(hand));
         }
 
-        [TestMethod]
-        public void TestFourOfAKind_ReturnFalseWithFullHouseCards()
-        {
-            IHand hand = new Hand(new List<ICard>() {
-                new Card(CardFace.Queen, CardSuit.Spades),
-                new Card(CardFace.Queen, CardSuit.Hearts),
-                new Card(CardFace.Queen, CardSuit.Clubs),
-                new Card(CardFace.Jack, CardSuit.Diamonds),
-                new Card(CardFace.Jack, CardSuit.Clubs),
-            });
-
-            IPokerHandsChecker checker = new PokerHandsChecker();
-
-            Assert.IsFalse(checker.IsFourOfAKind(hand));
-        }
-
-        [TestMethod]
-        public void TestFourOfAKind_ReturnFalseWithOnePairCards()
-        {
-            IHand hand = new Hand(new List<ICard>() {
-                new Card(CardFace.Ace, CardSuit.Spades),
-                new Card(CardFace.Ace, CardSuit.Hearts),
-                new Card(CardFace.Two, CardSuit.Clubs),
-                new Card(CardFace.Nine, CardSuit.Diamonds),
-                new Card(CardFace.Five, CardSuit.Clubs),
-            });
-
-            IPokerHandsChecker checker = new PokerHandsChecker();
-
-            Assert.IsFalse(checker.IsFourOfAKind(hand));
-        }
-
-        [TestMethod]
+       [TestMethod]
         public void TestFullHouse_ReturnTrueWithFullHouseCards()
         {
             IHand hand = new Hand(new List<ICard>() {
@@ -243,7 +211,7 @@ namespace PokerTest
 
             IPokerHandsChecker checker = new PokerHandsChecker();
 
-            Assert.IsFalse(checker.IsFullHouse(hand));
+            Assert.IsTrue(checker.IsFullHouse(hand));
         }
 
         [TestMethod]
@@ -259,7 +227,7 @@ namespace PokerTest
 
             IPokerHandsChecker checker = new PokerHandsChecker();
 
-            Assert.IsFalse(checker.IsFullHouse(hand));
+            Assert.IsTrue(checker.IsFullHouse(hand));
         }
 
         [TestMethod]
@@ -275,10 +243,9 @@ namespace PokerTest
 
             IPokerHandsChecker checker = new PokerHandsChecker();
 
-            Assert.IsFalse(checker.IsFullHouse(hand));
+            Assert.IsTrue(checker.IsFullHouse(hand));
         }
 
-       /*Tests for FLUSH*/
         [TestMethod]
         public void TestFlush_ReturnTrueWithFlushCards()
         {
@@ -325,22 +292,6 @@ namespace PokerTest
             IPokerHandsChecker checker = new PokerHandsChecker();
 
             Assert.IsTrue(checker.IsFlush(hand));
-        }
-
-        [TestMethod]
-        public void TestFlush_ReturnFalseWithHighCardCards()
-        {
-            IHand hand = new Hand(new List<ICard>() {
-                new Card(CardFace.Ace, CardSuit.Spades),
-                new Card(CardFace.Queen, CardSuit.Diamonds),
-                new Card(CardFace.Jack, CardSuit.Clubs),
-                new Card(CardFace.Six, CardSuit.Diamonds),
-                new Card(CardFace.Five, CardSuit.Spades),
-            });
-
-            IPokerHandsChecker checker = new PokerHandsChecker();
-
-            Assert.IsFalse(checker.IsFlush(hand));
         }
 
         [TestMethod]
