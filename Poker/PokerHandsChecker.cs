@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Poker
 {
@@ -20,36 +21,49 @@ namespace Poker
 
         public bool IsRoyal(IHand hand)
         {
+            var cardFacesArray = hand.Cards.Select(card => card.Face).ToArray();
             bool valid = true;
-            if (hand.Equals(CardFace.Ace) || hand.Equals(CardFace.King)
-                || hand.Equals(CardFace.Queen) || hand.Equals(CardFace.Jack)) {
-                valid = true;
+
+            foreach(var cardz in cardFacesArray)
+            {
+                if (cardz.Equals(CardFace.Ace).Equals(1)) {
+                    if (cardz.Equals(CardFace.King.Equals(1))) {
+                        if (cardz.Equals(CardFace.Queen.Equals(1))) {
+                           if (cardz.Equals(CardFace.Jack.Equals(1))) { 
+                                valid = true;
+                            }
+                            else {
+                                valid = false;
+                            }
+                        }
+                    }
+                }
             }
             return valid;
         }
 
         public bool IsRoyalFlush(IHand hand)
         {
+            //reqs: same suit, all must be royals
             bool valid = false;
             if (IsValidHand(hand)) {
-                if (IsFlush(hand)) {
-                    if (IsStraightFlush(hand)) {
-                        if (IsRoyal(hand))
-                        {
-                            valid = true;
-                        }
+                if (IsStraightFlush(hand)) { //check if same suit via straightflush
+                    if (IsRoyal(hand)) { //check if all royals
+                        valid = true;
                     }
                 }
+
             }     
              return valid;
         }
 
         public bool IsStraightFlush(IHand hand)
         {
+            //reqs: same suit, sequential in descending order
             bool valid = true;
             if (IsValidHand(hand))  {
-                if (IsStraight(hand))  {
-                    if (IsFlush(hand))
+                if (IsFlush(hand))  { //check if same suit
+                    if (IsStraight(hand))   //check if sequential and descending
                     {
                         valid = true;
                     }
@@ -121,7 +135,21 @@ namespace Poker
         }
         public bool IsStraight(IHand hand)
         {
-            return true;
+            var distinctFaces = hand.Cards.Select(card => card.Face).Distinct().ToArray();
+            var numOfUniqueFaces = distinctFaces.Count();
+            int numOfDuplicates = 0;
+
+            foreach (var card in distinctFaces) {
+                
+            
+               
+
+                if (numOfDuplicates == 0) {
+               
+                    return true;
+                }
+            }
+            return false;
         }
         public bool IsThreeOfAKind(IHand hand)
         {
@@ -166,17 +194,24 @@ namespace Poker
         }
         public bool IsHighCard(IHand hand)
         {
-            if (IsValidHand(hand)) {
-                if (!(IsFlush(hand))) {
-                    if (!(IsStraight(hand))) {
-                        if (!(IsOnePair(hand))) {
-                            return true;
-                        }
-                    }
-                }
-            }
-            //else false
-            return false;
+            bool valid = false;
+
+
+
+
+
+
+            return valid;
+            //if (IsValidHand(hand)) {
+            //    if (!(IsFlush(hand))) {
+            //        if (!(IsStraight(hand))) {
+            //            if (!(IsOnePair(hand))) {
+            //                return true;
+            //            }
+            //        }
+            //    }
+            //}
+            //return false;
         }
         public int CompareHands(IHand firstHand, IHand secondHand)
         {
