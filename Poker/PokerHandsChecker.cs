@@ -33,7 +33,7 @@ namespace Poker
             bool valid = false;
             if (IsValidHand(hand)) {
                 if (IsFlush(hand)) {
-                    if (IsStraight(hand)) {
+                    if (IsStraightFlush(hand)) {
                         if (IsRoyal(hand))
                         {
                             valid = true;
@@ -62,8 +62,8 @@ namespace Poker
         {
             bool valid = true;
             if (IsValidHand(hand)) {
-                if (IsThreeOfAKind(hand)) {
-                    if (IsTwoPair(hand))
+                if (IsTwoPair(hand)) {
+                    if (IsThreeOfAKind(hand))
                     {
                         valid = true;
                     }
@@ -76,10 +76,12 @@ namespace Poker
         {
             bool valid = false;
             if (IsValidHand(hand)) {
-                if (IsThreeOfAKind(hand)) {
-                    if (IsOnePair(hand))
-                    {
-                        valid = true;
+                if (IsOnePair(hand)) {
+                    if (IsTwoPair(hand)) {
+                        if (IsThreeOfAKind(hand))
+                        {
+                            valid = true;
+                        }
                     }
                 }
             }
@@ -95,9 +97,8 @@ namespace Poker
             int countHeart = 0;
 
             if (IsValidHand(hand)) {
-                for (int i = 0; i < 5; i++)
-                {
-                    if (hand.Cards[i].Suit.Equals(CardSuit.Clubs)) {
+                for(int c = 0; c < 5; c++) {
+                    if (hand.Equals(CardSuit.Clubs)) {
                         countClubs++;
                     }
                     else if (hand.Cards[i].Suit.Equals(CardSuit.Spades)) {
@@ -250,7 +251,6 @@ namespace Poker
 
             return false;
         }
-
         public bool IsHighCard(IHand hand)
         {
             //if the number of distinct faces is 5, if it's not a straight (no ranks in order), 
