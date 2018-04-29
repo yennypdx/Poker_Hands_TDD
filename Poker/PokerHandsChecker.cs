@@ -101,13 +101,13 @@ namespace Poker
                     if (hand.Equals(CardSuit.Clubs)) {
                         countClubs++;
                     }
-                    else if (hand.Cards[i].Suit.Equals(CardSuit.Spades)) {
+                    else if (hand.Cards[c].Suit.Equals(CardSuit.Spades)) {
                         countSpades++;
                     }
-                    else if (hand.Cards[i].Suit.Equals(CardSuit.Diamonds)) {
+                    else if (hand.Cards[c].Suit.Equals(CardSuit.Diamonds)) {
                         countDiamond++;
                     }
-                    else if (hand.Cards[i].Suit.Equals(CardSuit.Hearts)) {
+                    else if (hand.Cards[c].Suit.Equals(CardSuit.Hearts)) {
                         countHeart++;
                     }
                 }
@@ -183,9 +183,7 @@ namespace Poker
                 }
                 counter = 0;
             }
-
             return false;
-            throw new NotImplementedException();
         }
         public bool IsTwoPair(IHand hand)
         {
@@ -221,11 +219,7 @@ namespace Poker
             {
                 return true;
             }
-
             return false;
-
-            throw new NotImplementedException();
-
         }
         public bool IsOnePair(IHand hand)
         {
@@ -259,7 +253,6 @@ namespace Poker
             {
                 if (!(IsFlush(hand)))
                 {
-
                     var distinctFaces = hand.Cards.Select(card => card.Face).Distinct().ToArray().Length;
 
                     if (distinctFaces == 5)
@@ -269,8 +262,6 @@ namespace Poker
                 }
 
             }
-
-            //else false
             return false;
         }
         public int CompareHands(IHand firstHand, IHand secondHand)
