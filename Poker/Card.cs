@@ -31,6 +31,7 @@ namespace Poker
 
             return false;
         }
+
         public override int GetHashCode()
         {
             var intValOfFace = (int)this.Face;

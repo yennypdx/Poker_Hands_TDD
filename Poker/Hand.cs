@@ -24,9 +24,25 @@ namespace Poker
         //still need to do this
         public override int GetHashCode()
         {
-            var hashCode = 0;
+            var hashCode = default(int);
+            /*
+            var intValOfFace = (int)this.Face;
+            var intValOfSuit = (int)this.Suit;
+            var hashCode = intValOfFace + intValOfSuit;
+            */
             return hashCode;
         }
+       /* public override bool Equals(object obj)
+        {
+            var hand = obj as Hand;
 
+            if ((this.Hand == hand.Cards.CardFace))
+            {
+                return true;
+            }
+
+            return false;
+        }
+        */
     }
 }

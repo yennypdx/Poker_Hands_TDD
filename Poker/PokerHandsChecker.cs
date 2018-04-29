@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace Poker
 {
@@ -10,31 +9,34 @@ namespace Poker
         {
             bool valid = true;
             int counter = 0;
-            foreach(Card c in hand.Cards) {
+            foreach (Card c in hand.Cards) {
                 counter++;
             }
-                if(counter != 5) {
-                    valid = false;
-                }
+            if (counter != 5) {
+                valid = false;
+            }
             return valid;
         }
 
         public bool IsRoyal(IHand hand)
         {
-            var cardFacesArray = hand.Cards.Select(card => card.Face).ToArray();
             bool valid = true;
+            if (hand.Equals(CardFace.Ace) || hand.Equals(CardFace.King)
+                || hand.Equals(CardFace.Queen) || hand.Equals(CardFace.Jack)) {
+                valid = true;
+            }
+            return valid;
+        }
 
-            foreach(var cardz in cardFacesArray)
-            {
-                if (cardz.Equals(CardFace.Ace).Equals(1)) {
-                    if (cardz.Equals(CardFace.King.Equals(1))) {
-                        if (cardz.Equals(CardFace.Queen.Equals(1))) {
-                           if (cardz.Equals(CardFace.Jack.Equals(1))) { 
-                                valid = true;
-                            }
-                            else {
-                                valid = false;
-                            }
+        public bool IsRoyalFlush(IHand hand)
+        {
+            bool valid = false;
+            if (IsValidHand(hand)) {
+                if (IsFlush(hand)) {
+                    if (IsStraightFlush(hand)) {
+                        if (IsRoyal(hand))
+                        {
+                            valid = true;
                         }
                     }
                 }
@@ -42,28 +44,12 @@ namespace Poker
             return valid;
         }
 
-        public bool IsRoyalFlush(IHand hand)
-        {
-            //reqs: same suit, all must be royals
-            bool valid = false;
-            if (IsValidHand(hand)) {
-                if (IsStraightFlush(hand)) { //check if same suit via straightflush
-                    if (IsRoyal(hand)) { //check if all royals
-                        valid = true;
-                    }
-                }
-
-            }     
-             return valid;
-        }
-
         public bool IsStraightFlush(IHand hand)
         {
-            //reqs: same suit, sequential in descending order
             bool valid = true;
-            if (IsValidHand(hand))  {
-                if (IsFlush(hand))  { //check if same suit
-                    if (IsStraight(hand))   //check if sequential and descending
+            if (IsValidHand(hand)) {
+                if (IsStraight(hand)) {
+                    if (IsFlush(hand))
                     {
                         valid = true;
                     }
@@ -88,7 +74,7 @@ namespace Poker
 
         public bool IsFullHouse(IHand hand)
         {
-            bool valid = true;
+            bool valid = false;
             if (IsValidHand(hand)) {
                 if (IsOnePair(hand)) {
                     if (IsTwoPair(hand)) {
@@ -104,7 +90,7 @@ namespace Poker
 
         public bool IsFlush(IHand hand)
         {
-            bool valid = true;
+            bool valid = false;
             int countClubs = 0;
             int countSpades = 0;
             int countDiamond = 0;
@@ -115,13 +101,13 @@ namespace Poker
                     if (hand.Equals(CardSuit.Clubs)) {
                         countClubs++;
                     }
-                    else if (hand.Equals(CardSuit.Spades)) {
+                    else if (hand.Cards[i].Suit.Equals(CardSuit.Spades)) {
                         countSpades++;
                     }
-                    else if (hand.Equals(CardSuit.Diamonds)) {
+                    else if (hand.Cards[i].Suit.Equals(CardSuit.Diamonds)) {
                         countDiamond++;
                     }
-                    else if (hand.Equals(CardSuit.Hearts)) {
+                    else if (hand.Cards[i].Suit.Equals(CardSuit.Hearts)) {
                         countHeart++;
                     }
                 }
@@ -135,90 +121,200 @@ namespace Poker
         }
         public bool IsStraight(IHand hand)
         {
-            var distinctFaces = hand.Cards.Select(card => card.Face).Distinct().ToArray();
-            var numOfUniqueFaces = distinctFaces.Count();
-            int numOfDuplicates = 0;
+            var isThereAnAce = false;
+            var handList = hand.Cards.OrderBy(card => card.Face).ToList();
+            var isItStraight = true;
 
-            foreach (var card in distinctFaces) {
-                
-            
-               
+            //this is for considering Ace to be a possible lowest card in the straight
+            //generate a list of all the aces
+            var contains = handList.Where(card => card.Face == CardFace.Ace).ToList();
 
-                if (numOfDuplicates == 0) {
-               
-                    return true;
+            if (contains.Count() > 0)
+            {
+                isThereAnAce = true;
+                handList.Remove(contains[0]);
+            }
+
+            for (int i = 0; i < handList.Count() - 1; i++)
+            {
+                if ((handList[i + 1].Face) - (handList[i].Face) == 1)
+                {
+                    continue;
+                }
+                else
+                {
+                    isItStraight = false;
+                    break;
                 }
             }
-            return false;
+
+            //straight hands with ace as 1 will have its lowest element as 2
+            if (isThereAnAce && isItStraight)
+            {
+                if (Convert.ToInt16(handList.First().Face) != 2 &&
+                    Convert.ToInt16(handList.Last().Face) != 13)
+                {
+                    isItStraight = false;   
+                }
+            }
+            return isItStraight;
         }
         public bool IsThreeOfAKind(IHand hand)
         {
             var distinctFaces = hand.Cards.Select(card => card.Face).Distinct().ToArray();
+
             int counter = 0;
 
-            foreach (var distinctItem in distinctFaces) {
-                for (int i = 0; i < hand.Cards.Count(); i++) {
-                    if (hand.Cards[i].Face.Equals(distinctItem)) {
+            foreach (var distinctItem in distinctFaces)
+            {
+                for (int i = 0; i < hand.Cards.Count(); i++)
+                {
+
+                    if (hand.Cards[i].Face.Equals(distinctItem))
+                    {
                         counter++;
                     }
 
-                    if (counter == 3) {
+                    if (counter == 3)
+                    {
                         return true;
                     }
+
                 }
                 counter = 0;
             }
+
             return false;
+            throw new NotImplementedException();
         }
         public bool IsTwoPair(IHand hand)
         {
-            return true;
+            var handList = hand.Cards.OrderBy(card => card.Face).ToList();
+
+            int counterFirstPair = 0;
+            int counterSecondPair = 0;
+
+            for (int i = 0; i < handList.Count() - 1; i++)
+            {
+
+                if (handList[i].Face.Equals(handList[i + 1].Face))
+                {
+                    counterFirstPair++;
+                    handList.RemoveAt(i);
+                    handList.RemoveAt(i);
+                    break;
+                }
+            }
+
+            for (int i = 0; i < handList.Count() - 1; i++)
+            {
+                if (handList[i].Face.Equals(handList[i + 1].Face))
+                {
+                    counterSecondPair++;
+                    handList.RemoveAt(i);
+                    handList.RemoveAt(i);
+                    break;
+                }
+            }
+
+            if ((counterFirstPair == 1) && (counterSecondPair == 1))
+            {
+                return true;
+            }
+
+            return false;
+
+            throw new NotImplementedException();
+
         }
         public bool IsOnePair(IHand hand)
         {
             var distinctFaces = hand.Cards.Select(card => card.Face).Distinct().ToArray();
+
             int counter = 0;
+
             foreach (var distinctItem in distinctFaces) {
                 for (int i = 0; i < hand.Cards.Count(); i++) {
+
                     if (hand.Cards[i].Face.Equals(distinctItem)) {
                         counter++;
                     }
 
-                    if (counter == 2) {
+                    if (counter == 2)
+                    {
                         return true;
                     }
+
                 }
                 counter = 0;
             }
+
             return false;
         }
         public bool IsHighCard(IHand hand)
         {
-            bool valid = false;
+            //if the number of distinct faces is 5, if it's not a straight (no ranks in order), 
+            //and it's not a flush (not all the same suit)
+            if (!(IsStraight(hand)))
+            {
+                if (!(IsFlush(hand)))
+                {
 
+                    var distinctFaces = hand.Cards.Select(card => card.Face).Distinct().ToArray().Length;
 
+                    if (distinctFaces == 5)
+                    {
+                        return true;
+                    }
+                }
 
+            }
 
-
-
-            return valid;
-            //if (IsValidHand(hand)) {
-            //    if (!(IsFlush(hand))) {
-            //        if (!(IsStraight(hand))) {
-            //            if (!(IsOnePair(hand))) {
-            //                return true;
-            //            }
-            //        }
-            //    }
-            //}
-            //return false;
+            //else false
+            return false;
         }
         public int CompareHands(IHand firstHand, IHand secondHand)
         {
-            //decide whether we should do the extra work of comparing 
-            //hands of equal 'rank'
+            var resultOfFirstHand = HandNumber(firstHand);
+            var resultOfSecondHand = HandNumber(firstHand);
+            var resultOfComparison = default(int);
 
-            throw new NotImplementedException();
+            if (resultOfFirstHand < resultOfSecondHand) {
+                resultOfComparison = -1;
+            } else if (resultOfFirstHand > resultOfSecondHand) {
+                resultOfComparison = 1;
+            } else {
+                resultOfComparison = 0;
+            }
+            return resultOfComparison;
+        }
+
+        public int HandNumber(IHand hand) {
+
+           var handNum = default(int);
+
+            if (IsRoyalFlush(hand)) {
+                handNum = 9;
+            } else if (IsStraightFlush(hand)) {
+                handNum = 8;
+            } else if (IsFourOfAKind(hand)) {
+                handNum = 7;
+            } else if (IsFullHouse(hand)) {
+                handNum = 6;
+            } else if (IsFlush(hand)) {
+                handNum = 5;
+            } else if (IsStraight(hand)) {
+                handNum = 4;
+            } else if (IsThreeOfAKind(hand)) {
+                handNum = 3;
+            } else if (IsTwoPair(hand)) {
+                handNum = 2;
+            } else if (IsOnePair(hand)) {
+                handNum = 1;
+            } else {
+                handNum = 0;
+            }
+            return handNum;
         }
     }
 }
