@@ -29,7 +29,7 @@ namespace Poker
                     new Card(CardFace.King, CardSuit.Spades),
                     new Card(CardFace.Five, CardSuit.Diamonds),
                     new Card(CardFace.Queen,CardSuit.Clubs),
-                });
+            });
 
             var result = new PokerHandsChecker().IsHighCard(hand);
 

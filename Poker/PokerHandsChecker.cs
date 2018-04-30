@@ -64,15 +64,15 @@ namespace Poker
 
         public bool IsFourOfAKind(IHand hand)
         {
-            bool valid = false;
-            if (IsValidHand(hand)) {
-                if (IsTwoPair(hand)) {
-                    if (IsThreeOfAKind(hand)) {
-                        valid = true;
-                    }
+            bool validFourOfAKind = false;
+            var groupFaces = hand.Cards.GroupBy(card => card.Face);
+
+            foreach (var set in groupFaces) {
+                if (set.Count().Equals(4)) {
+                    validFourOfAKind = true;
                 }
             }
-            return valid;
+            return validFourOfAKind;
         }
 
         public bool IsFullHouse(IHand hand)
@@ -80,10 +80,8 @@ namespace Poker
             bool valid = false;
             if (IsValidHand(hand)) {
                 if (IsOnePair(hand)) {
-                    if (IsTwoPair(hand)) {
-                        if (IsThreeOfAKind(hand)) {
-                            valid = true;
-                        }
+                    if (IsThreeOfAKind(hand)) {
+                        valid = true;
                     }
                 }
             }
@@ -141,81 +139,52 @@ namespace Poker
 
         public bool IsThreeOfAKind(IHand hand)
         {
-            var distinctFaces = hand.Cards.Select(card => card.Face).Distinct().ToArray();
-            int counter = 0;
+            bool validThreeOfAKind = false;
+            var groupFaces = hand.Cards.GroupBy(card => card.Face);
 
-            foreach (var distinctItem in distinctFaces)
-            {
-                for (int i = 0; i < hand.Cards.Count(); i++)
-                {
-                    if (hand.Cards[i].Face.Equals(distinctItem))
-                    {
-                        counter++;
-                    }
-
-                    if (counter == 3)
-                    {
-                        return true;
-                    }
+            foreach (var set in groupFaces) {
+                if (set.Count().Equals(3))  {
+                    validThreeOfAKind = true;
                 }
-                counter = 0;
             }
-            return false;
+            return validThreeOfAKind;
         }
         public bool IsTwoPair(IHand hand)
         {
-            var handList = hand.Cards.OrderBy(card => card.Face).ToList();
-            int counterFirstPair = 0;
-            int counterSecondPair = 0;
+            bool validTwoPair = false;
+            int countPair = 0;
+            var groupFaces = hand.Cards.GroupBy(card => card.Face);
 
-            for (int i = 0; i < handList.Count() - 1; i++)
-            {
-                if (handList[i].Face.Equals(handList[i + 1].Face))
-                {
-                    counterFirstPair++;
-                    handList.RemoveAt(i);
-                    handList.RemoveAt(i);
-                    break;
+            foreach (var set in groupFaces) {
+                if (set.Count().Equals(2)) {  
+                    countPair++;
                 }
             }
 
-            for (int i = 0; i < handList.Count() - 1; i++)
-            {
-                if (handList[i].Face.Equals(handList[i + 1].Face))
-                {
-                    counterSecondPair++;
-                    handList.RemoveAt(i);
-                    handList.RemoveAt(i);
-                    break;
-                }
+            if (countPair.Equals(2)) {
+                validTwoPair = true;
             }
 
-            if ((counterFirstPair == 1) && (counterSecondPair == 1))
-            {
-                return true;
-            }
-            return false;
+            return validTwoPair;
         }
         public bool IsOnePair(IHand hand)
         {
-            var distinctFaces = hand.Cards.Select(card => card.Face).Distinct().ToArray();
-            int counter = 0;
+            bool validOnePair = false;
+            int count = 0;
+            var groupFaces = hand.Cards.GroupBy(card => card.Face);
 
-            foreach (var distinctItem in distinctFaces) {
-                for (int i = 0; i < hand.Cards.Count(); i++) {
-                    if (hand.Cards[i].Face.Equals(distinctItem)) {
-                        counter++;
-                    }
-
-                    if (counter == 2)
-                    {
-                        return true;
-                    }
+            foreach (var set in groupFaces) {
+                if (set.Count().Equals(2)) {
+                    validOnePair = true;
+                    count++;
                 }
-                counter = 0;
             }
 
-            return false;
+            if(count > 1)
+            {
+                validOnePair = false;
+            }
+            return validOnePair;
         }
         public bool IsHighCard(IHand hand)
         {
