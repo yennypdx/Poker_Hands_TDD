@@ -208,22 +208,25 @@ namespace Poker
         public int CompareHands(IHand firstHand, IHand secondHand)
         {
             var resultOfFirstHand = HandNumber(firstHand);
-            var resultOfSecondHand = HandNumber(firstHand);
+            var resultOfSecondHand = HandNumber(secondHand);
             var resultOfComparison = default(int);
 
             if (resultOfFirstHand < resultOfSecondHand) {
                 resultOfComparison = -1;
-            } else if (resultOfFirstHand > resultOfSecondHand) {
+            }
+            else if (resultOfFirstHand > resultOfSecondHand) {
                 resultOfComparison = 1;
-            } else {
+            }
+            else {
                 resultOfComparison = 0;
             }
+
             return resultOfComparison;
         }
 
-        public int HandNumber(IHand hand) {
-
-           var handNum = default(int);
+        public int HandNumber(IHand hand)
+        {
+            var handNum = default(int);
 
             if (IsRoyalFlush(hand)) {
                 handNum = 9;
