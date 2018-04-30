@@ -263,7 +263,7 @@ namespace PokerTest
         }
 
         [TestMethod]
-        public void TestFlush_ReturnFalseWithRoyalFlushCards()
+        public void TestFlush_ReturnTrueWithRoyalFlushCards()
         {
             IHand hand = new Hand(new List<ICard>() {
                 new Card(CardFace.Ace, CardSuit.Clubs),
@@ -275,11 +275,11 @@ namespace PokerTest
 
             IPokerHandsChecker checker = new PokerHandsChecker();
 
-            Assert.IsFalse(checker.IsFlush(hand));
+            Assert.IsTrue(checker.IsFlush(hand));
         }
 
         [TestMethod]
-        public void TestFlush_ReturnFalseWithStraightFlushCards()
+        public void TestFlush_ReturnTrueWithStraightFlushCards()
         {
             IHand hand = new Hand(new List<ICard>() {
                 new Card(CardFace.Nine, CardSuit.Clubs),
@@ -291,173 +291,120 @@ namespace PokerTest
 
             IPokerHandsChecker checker = new PokerHandsChecker();
 
+            Assert.IsTrue(checker.IsFlush(hand));
+        }
+
+        [TestMethod]
+        public void TestFlush_ReturnFalseWithStraightCards()
+        {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Nine, CardSuit.Clubs),
+                new Card(CardFace.Eight, CardSuit.Diamonds),
+                new Card(CardFace.Seven, CardSuit.Spades),
+                new Card(CardFace.Six, CardSuit.Diamonds),
+                new Card(CardFace.Five, CardSuit.Spades),
+            });
+
+            IPokerHandsChecker checker = new PokerHandsChecker();
+
             Assert.IsFalse(checker.IsFlush(hand));
         }
 
         [TestMethod]
         public void TestStraight_ReturnTrueWithStraightCards()
         {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Nine, CardSuit.Clubs),
+                new Card(CardFace.Eight, CardSuit.Diamonds),
+                new Card(CardFace.Seven, CardSuit.Spades),
+                new Card(CardFace.Six, CardSuit.Diamonds),
+                new Card(CardFace.Five, CardSuit.Spades),
+            });
 
-                //instantiate a new PokerChecker and call the test function
-                //var result = new PokerHandsChecker().IsStraight(hand);
+            IPokerHandsChecker checker = new PokerHandsChecker();
 
-                //assert statement
-               // Assert.IsTrue(result, "IsStraight - should have returned true for " +
-                   // "5 cards in a row of different suits");
-            }
+            Assert.IsTrue(checker.IsStraight(hand));
+        }
 
-            [TestMethod]
-            public void TestStraight_ReturnFalseWithRoyalFlushCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Ace, CardSuit.Clubs),
-                    new Card(CardFace.King, CardSuit.Clubs),
-                    new Card(CardFace.Queen, CardSuit.Clubs),
-                    new Card(CardFace.Jack, CardSuit.Clubs),
-                    new Card(CardFace.Ten, CardSuit.Clubs),
-                 });
+        [TestMethod]
+        public void TestStraight_ReturnTrueWithRoyalFlushCards()
+        {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Clubs),
+                new Card(CardFace.King, CardSuit.Clubs),
+                new Card(CardFace.Queen, CardSuit.Clubs),
+                new Card(CardFace.Jack, CardSuit.Clubs),
+                new Card(CardFace.Ten, CardSuit.Clubs),
+            });
 
-                var result = new PokerHandsChecker().IsStraight(hand);
-                
-                Assert.IsFalse(result, "IsStraight - should have returned false for " +
-                    "5 cards, K-10, of the same suit");
-            }
+            IPokerHandsChecker checker = new PokerHandsChecker();
 
-            [TestMethod]
-            public void TestStraight_ReturnFalseWithStraightFlushCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Six, CardSuit.Clubs),
-                    new Card(CardFace.Five, CardSuit.Clubs),
-                    new Card(CardFace.Four, CardSuit.Clubs),
-                    new Card(CardFace.Three, CardSuit.Clubs),
-                    new Card(CardFace.Two, CardSuit.Clubs),
-                 });
+            Assert.IsTrue(checker.IsStraight(hand));
+        }
 
-                var result = new PokerHandsChecker().IsStraight(hand);
+        [TestMethod]
+        public void TestStraight_ReturnFalseWithThreeOfAKindCards()
+        {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Five, CardSuit.Diamonds),
+                new Card(CardFace.Queen, CardSuit.Clubs),
+                new Card(CardFace.Two, CardSuit.Hearts),
+                new Card(CardFace.Two, CardSuit.Spades),
+                new Card(CardFace.Two, CardSuit.Diamonds),
+            });
 
-                Assert.IsFalse(result, "IsStraight - should have returned false for " +
-                    "5 cards in sequential rank, of the same suit");
-            }
+            IPokerHandsChecker checker = new PokerHandsChecker();
 
-            [TestMethod]
-            public void TestStraight_ReturnFalseWithFourOfAKindCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Two, CardSuit.Clubs),
-                    new Card(CardFace.Two, CardSuit.Hearts),
-                    new Card(CardFace.Two, CardSuit.Spades),
-                    new Card(CardFace.Two, CardSuit.Diamonds),
-                    new Card(CardFace.Ten, CardSuit.Clubs),
-                });
-                
-                 var result = new PokerHandsChecker().IsStraight(hand);
-                
-                 Assert.IsFalse(result, "IsStraight - should have returned false for " +
-                    "4 cards, with the same face and different suits");
-            }
+            Assert.IsFalse(checker.IsStraight(hand));
+        }
 
-            [TestMethod]
-            public void TestStraight_ReturnFalseWithFullHouseCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Two, CardSuit.Clubs),
-                    new Card(CardFace.Two, CardSuit.Hearts),
-                    new Card(CardFace.Two, CardSuit.Spades),
-                    new Card(CardFace.Three, CardSuit.Clubs),
-                    new Card(CardFace.Three, CardSuit.Hearts),
-                 });
-                
-                 var result = new PokerHandsChecker().IsStraight(hand);
-                
-                 Assert.IsFalse(result, "IsStraight - should have returned false for " +
-                    "3 cards with one face and 2 cards with another face");
-            }
+        [TestMethod]
+        public void TestStraight_ReturnFalseWithFullHouseCards()
+        {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Two, CardSuit.Clubs),
+                new Card(CardFace.Two, CardSuit.Hearts),
+                new Card(CardFace.Two, CardSuit.Spades),
+                new Card(CardFace.Three, CardSuit.Clubs),
+                new Card(CardFace.Three, CardSuit.Hearts),
+            });
 
-            [TestMethod]
-            public void TestStraight_ReturnFalseWithFlushCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Ace, CardSuit.Clubs),
-                    new Card(CardFace.King, CardSuit.Clubs),
-                    new Card(CardFace.Ten, CardSuit.Clubs),
-                    new Card(CardFace.Three, CardSuit.Clubs),
-                    new Card(CardFace.Two, CardSuit.Clubs),
-                });
+            IPokerHandsChecker checker = new PokerHandsChecker();
 
-                var result = new PokerHandsChecker().IsStraight(hand);
+            Assert.IsFalse(checker.IsStraight(hand));
+        }
 
-                Assert.IsFalse(result, "IsStraight - should have returned false for " +
-                    "5 cards, of the same suit and not in seqential order");
-            }
+        [TestMethod]
+        public void TestStraight_ReturnFalseWithFlushCards()
+        {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Clubs),
+                new Card(CardFace.King, CardSuit.Clubs),
+                new Card(CardFace.Ten, CardSuit.Clubs),
+                new Card(CardFace.Three, CardSuit.Clubs),
+                new Card(CardFace.Two, CardSuit.Clubs),
+            });
 
-            [TestMethod]
-            public void TestStraight_ReturnFalseWithThreeOfAKindCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Two, CardSuit.Clubs),
-                    new Card(CardFace.Two, CardSuit.Hearts),
-                    new Card(CardFace.Two, CardSuit.Spades),
-                    new Card(CardFace.Three, CardSuit.Diamonds),
-                    new Card(CardFace.Ten, CardSuit.Clubs),
-                });
+            IPokerHandsChecker checker = new PokerHandsChecker();
 
-                var result = new PokerHandsChecker().IsStraight(hand);
+            Assert.IsFalse(checker.IsStraight(hand));
+        }
 
-                Assert.IsFalse(result, "IsStraight - should have returned false for " +
-                    "3 cards, with the same face and different suits");
-            }
+        [TestMethod]
+        public void TestStraight_ReturnFalseWithHighCardCards()
+        {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Two,  CardSuit.Clubs),
+                new Card(CardFace.Four, CardSuit.Hearts),
+                new Card(CardFace.King, CardSuit.Spades),
+                new Card(CardFace.Five, CardSuit.Diamonds),
+                new Card(CardFace.Queen,CardSuit.Clubs),
+            });
 
-            [TestMethod]
-            public void TestStraight_ReturnFalseWithTwoPairCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Two, CardSuit.Clubs),
-                    new Card(CardFace.Two, CardSuit.Hearts),
-                    new Card(CardFace.Three, CardSuit.Spades),
-                    new Card(CardFace.Three, CardSuit.Diamonds),
-                    new Card(CardFace.Ten, CardSuit.Clubs),
-                });
+            IPokerHandsChecker checker = new PokerHandsChecker();
 
-                var result = new PokerHandsChecker().IsStraight(hand);
-
-                Assert.IsFalse(result, "IsStraight - should have returned false for " +
-                "2 pairs of cards, with the same face and different suits");
-             }
-    
-            [TestMethod]
-            public void TestStraight_ReturnFalseWithOnePairCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Two, CardSuit.Clubs),
-                    new Card(CardFace.Two, CardSuit.Hearts),
-                    new Card(CardFace.Four, CardSuit.Spades),
-                    new Card(CardFace.Three, CardSuit.Diamonds),
-                    new Card(CardFace.Ten, CardSuit.Clubs),
-                });
-
-                var result = new PokerHandsChecker().IsStraight(hand);
-
-                Assert.IsFalse(result, "IsStraight - should have returned false for " +
-                    "2 cards, with the same face and different suits");
-            }
-
-            [TestMethod]
-            public void TestStraight_ReturnFalseWithHighCardCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Two,  CardSuit.Clubs),
-                    new Card(CardFace.Four, CardSuit.Hearts),
-                    new Card(CardFace.King, CardSuit.Spades),
-                    new Card(CardFace.Five, CardSuit.Diamonds),
-                    new Card(CardFace.Queen,CardSuit.Clubs),
-                });
-
-                var result = new PokerHandsChecker().IsStraight(hand);
-
-                 Assert.IsFalse(result, "IsStraight - should have returned false for " +
-                "5 cards, none of which are in order, have the same suit, or the same rank");
-            }
+            Assert.IsFalse(checker.IsStraight(hand));
+        }
 
         [TestMethod]
         public void TestThreeOfAKind_ReturnTrueWithThreeOfAKindCards()
@@ -467,160 +414,160 @@ namespace PokerTest
 
               // Assert.IsTrue(result, "IsThreeOfAKind- should have returned true for " +
                 //"3 cards with the same face and 2 cards with different faces");
-            }
+        }
 
-            [TestMethod]
-            public void TestThreeOfAKind_ReturnFalseWithRoyalFlushCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Ace, CardSuit.Clubs),
-                    new Card(CardFace.King, CardSuit.Clubs),
-                    new Card(CardFace.Queen, CardSuit.Clubs),
-                    new Card(CardFace.Jack, CardSuit.Clubs),
-                    new Card(CardFace.Ten, CardSuit.Clubs),
-                 });
-
-                var result = new PokerHandsChecker().IsThreeOfAKind(hand);
-
-                Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
-                    "5 cards, K-10, of the same suit");
-            }
-
-            [TestMethod]
-            public void TestThreeOfAKind_ReturnFalseWithStraightFlushCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Six, CardSuit.Clubs),
-                    new Card(CardFace.Five, CardSuit.Clubs),
-                    new Card(CardFace.Four, CardSuit.Clubs),
-                    new Card(CardFace.Three, CardSuit.Clubs),
-                    new Card(CardFace.Two, CardSuit.Clubs),
-                 });
-
-                var result = new PokerHandsChecker().IsThreeOfAKind(hand);
-
-                Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
-                    "5 cards in sequential rank, of the same suit");
-            }
-
-            [TestMethod]
-            public void TestThreeOfAKind_ReturnFalseWithFourOfAKindCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Two, CardSuit.Clubs),
-                    new Card(CardFace.Two, CardSuit.Hearts),
-                    new Card(CardFace.Two, CardSuit.Spades),
-                    new Card(CardFace.Two, CardSuit.Diamonds),
-                    new Card(CardFace.Ten, CardSuit.Clubs),
+        [TestMethod]
+        public void TestThreeOfAKind_ReturnFalseWithRoyalFlushCards()
+        {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Clubs),
+                new Card(CardFace.King, CardSuit.Clubs),
+                new Card(CardFace.Queen, CardSuit.Clubs),
+                new Card(CardFace.Jack, CardSuit.Clubs),
+                new Card(CardFace.Ten, CardSuit.Clubs),
                 });
 
-                var result = new PokerHandsChecker().IsThreeOfAKind(hand);
+            var result = new PokerHandsChecker().IsThreeOfAKind(hand);
 
-                Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
-                   "4 cards, with the same face and different suits");
-            }
+            Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
+                "5 cards, K-10, of the same suit");
+        }
 
-            [TestMethod]
-            public void TestThreeOfAKind_ReturnFalseWithFullHouseCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Two, CardSuit.Clubs),
-                    new Card(CardFace.Two, CardSuit.Hearts),
-                    new Card(CardFace.Two, CardSuit.Spades),
-                    new Card(CardFace.Three, CardSuit.Clubs),
-                    new Card(CardFace.Three, CardSuit.Hearts),
-                 });
-
-                var result = new PokerHandsChecker().IsThreeOfAKind(hand);
-
-                Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
-                   "3 cards with one face and 2 cards with another face");
-            }
-
-            [TestMethod]
-            public void TestThreeOfAKind_ReturnFalseWithFlushCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Ace, CardSuit.Clubs),
-                    new Card(CardFace.King, CardSuit.Clubs),
-                    new Card(CardFace.Ten, CardSuit.Clubs),
-                    new Card(CardFace.Three, CardSuit.Clubs),
-                    new Card(CardFace.Two, CardSuit.Clubs),
+        [TestMethod]
+        public void TestThreeOfAKind_ReturnFalseWithStraightFlushCards()
+        {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Six, CardSuit.Clubs),
+                new Card(CardFace.Five, CardSuit.Clubs),
+                new Card(CardFace.Four, CardSuit.Clubs),
+                new Card(CardFace.Three, CardSuit.Clubs),
+                new Card(CardFace.Two, CardSuit.Clubs),
                 });
 
-                var result = new PokerHandsChecker().IsThreeOfAKind(hand);
+            var result = new PokerHandsChecker().IsThreeOfAKind(hand);
 
-                Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
-                    "5 cards, of the same suit and not in seqential order");
-            }
+            Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
+                "5 cards in sequential rank, of the same suit");
+        }
 
-            [TestMethod]
-            public void TestThreeOfAKind_ReturnFalseWithStraightCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Six, CardSuit.Clubs),
-                    new Card(CardFace.Five, CardSuit.Diamonds),
-                    new Card(CardFace.Four, CardSuit.Hearts),
-                    new Card(CardFace.Three, CardSuit.Spades),
-                    new Card(CardFace.Two, CardSuit.Diamonds),
-                 });
+        [TestMethod]
+        public void TestThreeOfAKind_ReturnFalseWithFourOfAKindCards()
+        {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Two, CardSuit.Clubs),
+                new Card(CardFace.Two, CardSuit.Hearts),
+                new Card(CardFace.Two, CardSuit.Spades),
+                new Card(CardFace.Two, CardSuit.Diamonds),
+                new Card(CardFace.Ten, CardSuit.Clubs),
+            });
 
-                var result = new PokerHandsChecker().IsThreeOfAKind(hand);
+            var result = new PokerHandsChecker().IsThreeOfAKind(hand);
 
-                Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
-                    "5 cards in a row of different suits");
-            }
+            Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
+                "4 cards, with the same face and different suits");
+        }
 
-            [TestMethod]
-            public void TestThreeOfAKind_ReturnFalseWithTwoPairCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Two, CardSuit.Clubs),
-                    new Card(CardFace.Two, CardSuit.Hearts),
-                    new Card(CardFace.Three, CardSuit.Spades),
-                    new Card(CardFace.Three, CardSuit.Diamonds),
-                    new Card(CardFace.Ten, CardSuit.Clubs),
+        [TestMethod]
+        public void TestThreeOfAKind_ReturnFalseWithFullHouseCards()
+        {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Two, CardSuit.Clubs),
+                new Card(CardFace.Two, CardSuit.Hearts),
+                new Card(CardFace.Two, CardSuit.Spades),
+                new Card(CardFace.Three, CardSuit.Clubs),
+                new Card(CardFace.Three, CardSuit.Hearts),
                 });
 
-                var result = new PokerHandsChecker().IsThreeOfAKind(hand);
+            var result = new PokerHandsChecker().IsThreeOfAKind(hand);
 
-                Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
-                "2 pairs of cards, with the same face and different suits");
-            }
+            Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
+                "3 cards with one face and 2 cards with another face");
+        }
 
-            [TestMethod]
-            public void TestThreeOfAKind_ReturnFalseWithOnePairCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Two, CardSuit.Clubs),
-                    new Card(CardFace.Two, CardSuit.Hearts),
-                    new Card(CardFace.Four, CardSuit.Spades),
-                    new Card(CardFace.Three, CardSuit.Diamonds),
-                    new Card(CardFace.Ten, CardSuit.Clubs),
+        [TestMethod]
+        public void TestThreeOfAKind_ReturnFalseWithFlushCards()
+        {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Ace, CardSuit.Clubs),
+                new Card(CardFace.King, CardSuit.Clubs),
+                new Card(CardFace.Ten, CardSuit.Clubs),
+                new Card(CardFace.Three, CardSuit.Clubs),
+                new Card(CardFace.Two, CardSuit.Clubs),
+            });
+
+            var result = new PokerHandsChecker().IsThreeOfAKind(hand);
+
+            Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
+                "5 cards, of the same suit and not in seqential order");
+        }
+
+        [TestMethod]
+        public void TestThreeOfAKind_ReturnFalseWithStraightCards()
+        {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Six, CardSuit.Clubs),
+                new Card(CardFace.Five, CardSuit.Diamonds),
+                new Card(CardFace.Four, CardSuit.Hearts),
+                new Card(CardFace.Three, CardSuit.Spades),
+                new Card(CardFace.Two, CardSuit.Diamonds),
                 });
 
-                var result = new PokerHandsChecker().IsThreeOfAKind(hand);
+            var result = new PokerHandsChecker().IsThreeOfAKind(hand);
 
-                Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
-                    "2 cards, with the same face and different suits");
-            }
+            Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
+                "5 cards in a row of different suits");
+        }
 
-            [TestMethod]
-            public void TestThreeOfAKind_ReturnFalseWithHighCardCards()
-            {
-                IHand hand = new Hand(new List<ICard>() {
-                    new Card(CardFace.Two,  CardSuit.Clubs),
-                    new Card(CardFace.Four, CardSuit.Hearts),
-                    new Card(CardFace.King, CardSuit.Spades),
-                    new Card(CardFace.Five, CardSuit.Diamonds),
-                    new Card(CardFace.Queen,CardSuit.Clubs),
-                });
+        [TestMethod]
+        public void TestThreeOfAKind_ReturnFalseWithTwoPairCards()
+        {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Two, CardSuit.Clubs),
+                new Card(CardFace.Two, CardSuit.Hearts),
+                new Card(CardFace.Three, CardSuit.Spades),
+                new Card(CardFace.Three, CardSuit.Diamonds),
+                new Card(CardFace.Ten, CardSuit.Clubs),
+            });
 
-                var result = new PokerHandsChecker().IsThreeOfAKind(hand);
+            var result = new PokerHandsChecker().IsThreeOfAKind(hand);
 
-                Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
-               "5 cards, none of which are in order, have the same suit, or the same rank");
-            }
+            Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
+            "2 pairs of cards, with the same face and different suits");
+        }
+
+        [TestMethod]
+        public void TestThreeOfAKind_ReturnFalseWithOnePairCards()
+        {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Two, CardSuit.Clubs),
+                new Card(CardFace.Two, CardSuit.Hearts),
+                new Card(CardFace.Four, CardSuit.Spades),
+                new Card(CardFace.Three, CardSuit.Diamonds),
+                new Card(CardFace.Ten, CardSuit.Clubs),
+            });
+
+            var result = new PokerHandsChecker().IsThreeOfAKind(hand);
+
+            Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
+                "2 cards, with the same face and different suits");
+        }
+
+        [TestMethod]
+        public void TestThreeOfAKind_ReturnFalseWithHighCardCards()
+        {
+            IHand hand = new Hand(new List<ICard>() {
+                new Card(CardFace.Two,  CardSuit.Clubs),
+                new Card(CardFace.Four, CardSuit.Hearts),
+                new Card(CardFace.King, CardSuit.Spades),
+                new Card(CardFace.Five, CardSuit.Diamonds),
+                new Card(CardFace.Queen,CardSuit.Clubs),
+            });
+
+            var result = new PokerHandsChecker().IsThreeOfAKind(hand);
+
+            Assert.IsFalse(result, "IsThreeOfAKind - should have returned false for " +
+            "5 cards, none of which are in order, have the same suit, or the same rank");
+        }
 
         [TestMethod]
         public void TestTwoPair_ReturnTrueWithRoyalFlushCards()

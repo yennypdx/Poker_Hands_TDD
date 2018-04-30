@@ -20,10 +20,17 @@ namespace Poker
 
         public bool IsRoyal(IHand hand)
         {
-            bool valid = true;
-            if (hand.Equals(CardFace.Ace) || hand.Equals(CardFace.King)
-                || hand.Equals(CardFace.Queen) || hand.Equals(CardFace.Jack)) {
-                valid = true;
+            var handArray = hand.Cards.Select(card => card.Face).ToArray();
+            bool valid = false;
+
+            foreach (var c in handArray)
+            {
+                if (c.Equals(CardFace.Ace)) { valid = true; }
+                else if (c.Equals(CardFace.King)) { valid = true; }
+                else if (c.Equals(CardFace.Queen)) { valid = true; }
+                else if (c.Equals(CardFace.Jack)) { valid = true; }
+                else if (c.Equals(CardFace.Ten)) { valid = true; }
+                else { valid = false; }
             }
             return valid;
         }
@@ -32,12 +39,9 @@ namespace Poker
         {
             bool valid = false;
             if (IsValidHand(hand)) {
-                if (IsFlush(hand)) {
+                if (IsRoyal(hand)) {
                     if (IsStraightFlush(hand)) {
-                        if (IsRoyal(hand))
-                        {
-                            valid = true;
-                        }
+                         valid = true;
                     }
                 }
             }
@@ -46,11 +50,11 @@ namespace Poker
 
         public bool IsStraightFlush(IHand hand)
         {
-            bool valid = true;
+            bool valid = false;
+
             if (IsValidHand(hand)) {
                 if (IsStraight(hand)) {
-                    if (IsFlush(hand))
-                    {
+                    if (IsFlush(hand)) {
                         valid = true;
                     }
                 }
@@ -60,11 +64,10 @@ namespace Poker
 
         public bool IsFourOfAKind(IHand hand)
         {
-            bool valid = true;
+            bool valid = false;
             if (IsValidHand(hand)) {
                 if (IsTwoPair(hand)) {
-                    if (IsThreeOfAKind(hand))
-                    {
+                    if (IsThreeOfAKind(hand)) {
                         valid = true;
                     }
                 }
@@ -78,8 +81,7 @@ namespace Poker
             if (IsValidHand(hand)) {
                 if (IsOnePair(hand)) {
                     if (IsTwoPair(hand)) {
-                        if (IsThreeOfAKind(hand))
-                        {
+                        if (IsThreeOfAKind(hand)) {
                             valid = true;
                         }
                     }
@@ -90,86 +92,62 @@ namespace Poker
 
         public bool IsFlush(IHand hand)
         {
-            bool valid = false;
-            int countClubs = 0;
-            int countSpades = 0;
-            int countDiamond = 0;
-            int countHeart = 0;
+            bool validFlush = false;
+            var groupSuits = hand.Cards.GroupBy(card => card.Suit);
 
-            if (IsValidHand(hand)) {
-                for(int c = 0; c < 5; c++) {
-                    if (hand.Equals(CardSuit.Clubs)) {
-                        countClubs++;
-                    }
-                    else if (hand.Cards[c].Suit.Equals(CardSuit.Spades)) {
-                        countSpades++;
-                    }
-                    else if (hand.Cards[c].Suit.Equals(CardSuit.Diamonds)) {
-                        countDiamond++;
-                    }
-                    else if (hand.Cards[c].Suit.Equals(CardSuit.Hearts)) {
-                        countHeart++;
-                    }
+            foreach(var set in groupSuits) {
+                if (set.Count().Equals(5)) {
+                    validFlush = true;
                 }
             }
-
-            if (countClubs.Equals(5) || countSpades.Equals(5) ||
-                 countDiamond.Equals(5) || countHeart.Equals(5)) {
-                valid = true;
-            }
-            return valid;
+            return validFlush;
         }
         public bool IsStraight(IHand hand)
         {
-            var isThereAnAce = false;
-            var handList = hand.Cards.OrderBy(card => card.Face).ToList();
-            var isItStraight = true;
+            bool validStraight = false;
+            var handSorted = hand.Cards.OrderByDescending(card => card.Face).ToList();
+            var handDistinctSorted = handSorted.Distinct().ToList();
 
-            //this is for considering Ace to be a possible lowest card in the straight
-            //generate a list of all the aces
-            var contains = handList.Where(card => card.Face == CardFace.Ace).ToList();
-
-            if (contains.Count() > 0)
-            {
-                isThereAnAce = true;
-                handList.Remove(contains[0]);
-            }
-
-            for (int i = 0; i < handList.Count() - 1; i++)
-            {
-                if ((handList[i + 1].Face) - (handList[i].Face) == 1)
-                {
-                    continue;
-                }
-                else
-                {
-                    isItStraight = false;
-                    break;
-                }
-            }
-
-            //straight hands with ace as 1 will have its lowest element as 2
-            if (isThereAnAce && isItStraight)
-            {
-                if (Convert.ToInt16(handList.First().Face) != 2 &&
-                    Convert.ToInt16(handList.Last().Face) != 13)
-                {
-                    isItStraight = false;   
+            if (IsValidHand(hand)) {
+                if (handDistinctSorted.Count().Equals(5)) {
+                    for (var i = 0; i < handDistinctSorted.Count(); i++) {
+                        if (handDistinctSorted.First().Face.Equals(CardFace.Ace) && handDistinctSorted.Last().Face.Equals(CardFace.Ten))
+                            validStraight = true;
+                        else if (handDistinctSorted.First().Face.Equals(CardFace.King) && handDistinctSorted.Last().Face.Equals(CardFace.Nine))
+                            validStraight = true;
+                        else if (handDistinctSorted.First().Face.Equals(CardFace.Queen) && handDistinctSorted.Last().Face.Equals(CardFace.Eight))
+                            validStraight = true;
+                        else if (handDistinctSorted.First().Face.Equals(CardFace.Jack) && handDistinctSorted.Last().Face.Equals(CardFace.Seven))
+                            validStraight = true;
+                        else if (handDistinctSorted.First().Face.Equals(CardFace.Ten) && handDistinctSorted.Last().Face.Equals(CardFace.Six))
+                            validStraight = true;
+                        else if (handDistinctSorted.First().Face.Equals(CardFace.Nine) && handDistinctSorted.Last().Face.Equals(CardFace.Five))
+                            validStraight = true;
+                        else if (handDistinctSorted.First().Face.Equals(CardFace.Eight) && handDistinctSorted.Last().Face.Equals(CardFace.Four))
+                            validStraight = true;
+                        else if (handDistinctSorted.First().Face.Equals(CardFace.Seven) && handDistinctSorted.Last().Face.Equals(CardFace.Three))
+                            validStraight = true;
+                        else if (handDistinctSorted.First().Face.Equals(CardFace.Six) && handDistinctSorted.Last().Face.Equals(CardFace.Two))
+                            validStraight = true;
+                        else if (handDistinctSorted.First().Face.Equals(CardFace.Five) && handDistinctSorted.Last().Face.Equals(CardFace.Ace))
+                            validStraight = true;
+                        else
+                            validStraight = false;
+                    }
                 }
             }
-            return isItStraight;
+            return validStraight;
         }
+
         public bool IsThreeOfAKind(IHand hand)
         {
             var distinctFaces = hand.Cards.Select(card => card.Face).Distinct().ToArray();
-
             int counter = 0;
 
             foreach (var distinctItem in distinctFaces)
             {
                 for (int i = 0; i < hand.Cards.Count(); i++)
                 {
-
                     if (hand.Cards[i].Face.Equals(distinctItem))
                     {
                         counter++;
@@ -179,7 +157,6 @@ namespace Poker
                     {
                         return true;
                     }
-
                 }
                 counter = 0;
             }
@@ -188,13 +165,11 @@ namespace Poker
         public bool IsTwoPair(IHand hand)
         {
             var handList = hand.Cards.OrderBy(card => card.Face).ToList();
-
             int counterFirstPair = 0;
             int counterSecondPair = 0;
 
             for (int i = 0; i < handList.Count() - 1; i++)
             {
-
                 if (handList[i].Face.Equals(handList[i + 1].Face))
                 {
                     counterFirstPair++;
@@ -224,12 +199,10 @@ namespace Poker
         public bool IsOnePair(IHand hand)
         {
             var distinctFaces = hand.Cards.Select(card => card.Face).Distinct().ToArray();
-
             int counter = 0;
 
             foreach (var distinctItem in distinctFaces) {
                 for (int i = 0; i < hand.Cards.Count(); i++) {
-
                     if (hand.Cards[i].Face.Equals(distinctItem)) {
                         counter++;
                     }
@@ -238,7 +211,6 @@ namespace Poker
                     {
                         return true;
                     }
-
                 }
                 counter = 0;
             }
