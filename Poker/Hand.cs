@@ -21,15 +21,15 @@ namespace Poker
             }
             return outString;
         }
-        //still need to do this
-        public override int GetHashCode()
+       public override int GetHashCode()
         {
-            var hashCode = default(int);
-            /*
-            var intValOfFace = (int)this.Face;
-            var intValOfSuit = (int)this.Suit;
-            var hashCode = intValOfFace + intValOfSuit;
-            */
+            var hashCode = Convert.ToInt32(this.Cards[0].Face) + 
+                Convert.ToInt32(this.Cards[1].Face) + Convert.ToInt32(this.Cards[2].Face) +
+                Convert.ToInt32(this.Cards[3].Face) + Convert.ToInt32(this.Cards[4].Face) +
+                Convert.ToInt32(this.Cards[0].Suit) + Convert.ToInt32(this.Cards[1].Suit) + 
+                Convert.ToInt32(this.Cards[2].Suit) + Convert.ToInt32(this.Cards[3].Suit) +
+                Convert.ToInt32(this.Cards[4].Suit);
+
             return hashCode;
         }
        /* public override bool Equals(object obj)
